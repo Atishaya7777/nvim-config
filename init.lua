@@ -56,7 +56,7 @@ vim.opt.splitbelow = true
 -- Sets how neovim will display certain whitespace characters in the editor.
 --  See `:help 'list'`
 --  and `:help 'listchars'`
-vim.opt.list = true
+vim.opt.list = false
 vim.opt.listchars = { tab = '» ', trail = '·', nbsp = '␣' }
 
 -- Preview substitutions live, as you type!
@@ -103,6 +103,15 @@ vim.keymap.set('n', '<C-h>', '<C-w><C-h>', { desc = 'Move focus to the left wind
 vim.keymap.set('n', '<C-l>', '<C-w><C-l>', { desc = 'Move focus to the right window' })
 vim.keymap.set('n', '<C-j>', '<C-w><C-j>', { desc = 'Move focus to the lower window' })
 vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper window' })
+
+-- Keybinds for actually deleting instead of cutting stuff
+vim.keymap.set('n', 'd', '"_d', { desc = 'Cut text and put it in the black hole register | Effectively deleting it' })
+vim.keymap.set('n', 'dp', '"_dP', { desc = 'Paste the text from the black hole register' })
+
+-- Keybinds for buffers
+vim.keymap.set('n', '<C-x>', ':bd<CR>', { desc = 'Delete current buffer' })
+vim.keymap.set('n', 'bp', ':bprevious<CR>', { desc = 'Go to previoous buffer' })
+vim.keymap.set('n', 'bn', ':bnext<CR>', { desc = 'Go to next buffer' })
 
 -- [[ Basic Autocommands ]]
 --  See `:help lua-guide-autocommands`
