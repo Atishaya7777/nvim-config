@@ -108,6 +108,9 @@ vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper win
 vim.keymap.set('n', 'd', '"_d', { desc = 'Cut text and put it in the black hole register | Effectively deleting it' })
 vim.keymap.set('n', 'dp', '"_dP', { desc = 'Paste the text from the black hole register' })
 
+-- Keybinds for cutting text
+vim.keymap.set('n', 'xx', 'yydd', { desc = 'Cut text as you would do normally outside of vim' })
+
 -- Keybinds for buffers
 vim.keymap.set('n', '<leader>x', ':bp|bd#<CR>', { desc = 'Delete current buffer' })
 vim.keymap.set('n', 'bp', ':bprevious<CR>', { desc = 'Go to previoous buffer' })
@@ -598,7 +601,7 @@ require('lazy').setup({
       },
     },
     opts = {
-      notify_on_error = false,
+      notify_on_error = true,
       format_on_save = function(bufnr)
         -- Disable "format_on_save lsp_fallback" for languages that don't
         -- have a well standardized coding style. You can add additional
