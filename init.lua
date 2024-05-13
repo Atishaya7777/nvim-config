@@ -537,6 +537,7 @@ require('lazy').setup({
             },
           },
         },
+        astro = {},
         lua_ls = {
           -- cmd = {...},
           -- filetypes = { ...},
@@ -622,6 +623,7 @@ require('lazy').setup({
         typescript = { { 'prettierd', 'prettier' } },
         javascriptreact = { { 'prettierd', 'prettier' } },
         typescriptreact = { { 'prettierd', 'prettier' } },
+        astro = { { 'prettier' } },
       },
     },
   },
