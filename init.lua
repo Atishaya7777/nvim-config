@@ -282,6 +282,12 @@ require('lazy').setup({
         --   },
         -- },
         -- pickers = {}
+        defaults = {
+          path_display = {
+            -- Shortens the path displayed while fuzzy finding to include only the first 3 characters
+            shorten = 3,
+          },
+        },
         extensions = {
           ['ui-select'] = {
             require('telescope.themes').get_dropdown(),
