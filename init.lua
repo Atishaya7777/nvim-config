@@ -619,10 +619,10 @@ require('lazy').setup({
         python = { 'isort', 'black' },
         -- You can use a sub-list to tell conform to run *until* a formatter
         -- is found.
-        javascript = { { 'prettierd', 'prettier' } },
-        typescript = { { 'prettierd', 'prettier' } },
-        javascriptreact = { { 'prettierd', 'prettier' } },
-        typescriptreact = { { 'prettierd', 'prettier' } },
+        javascript = { { 'prettier' } },
+        typescript = { { 'prettier' } },
+        javascriptreact = { { 'prettier' } },
+        typescriptreact = { { 'prettier' } },
         astro = { { 'prettier' } },
       },
     },
