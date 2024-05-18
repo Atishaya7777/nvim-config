@@ -109,7 +109,7 @@ vim.keymap.set('n', 'd', '"_d', { desc = 'Cut text and put it in the black hole 
 vim.keymap.set('n', 'dp', '"_dP', { desc = 'Paste the text from the black hole register' })
 
 -- Keybinds for cutting text
-vim.keymap.set('n', 'xx', 'yydd', { desc = 'Cut text as you would do normally outside of vim' })
+vim.keymap.set('n', 'cx', 'yydd', { desc = 'Cut text as you would do normally outside of vim' })
 
 -- Keybinds for buffers
 vim.keymap.set('n', '<leader>x', ':bp|bd#<CR>', { desc = 'Delete current buffer' })
