@@ -116,6 +116,11 @@ vim.keymap.set('n', '<leader>x', ':bp|bd#<CR>', { desc = 'Delete current buffer'
 vim.keymap.set('n', 'bp', ':bprevious<CR>', { desc = 'Go to previoous buffer' })
 vim.keymap.set('n', 'bn', ':bnext<CR>', { desc = 'Go to next buffer' })
 
+vim.keymap.set('n', 'crd', ':!crd', { desc = 'Create a React directory' })
+
+-- Keybind to create a new line while in insert mode
+vim.keymap.set('i', '<C-n>', '<esc>o', { desc = 'Create new line and jump to the new line in insert mode' })
+
 -- [[ Basic Autocommands ]]
 --  See `:help lua-guide-autocommands`
 
@@ -544,6 +549,12 @@ require('lazy').setup({
           },
         },
         astro = {},
+        bashls = {
+          filetypes = {
+            'sh',
+            'zsh',
+          },
+        },
         lua_ls = {
           -- cmd = {...},
           -- filetypes = { ...},
