@@ -116,6 +116,16 @@ vim.keymap.set('n', '<leader>x', ':bp|bd#<CR>', { desc = 'Delete current buffer'
 vim.keymap.set('n', 'bp', ':bprevious<CR>', { desc = 'Go to previoous buffer' })
 vim.keymap.set('n', 'bn', ':bnext<CR>', { desc = 'Go to next buffer' })
 
+vim.keymap.set('n', 'cub', function()
+  local bufinfos = vim.fn.getbufinfo { buflisted = true }
+  vim.tbl_map(function(bufinfo)
+    if bufinfo.changed == 0 and (not bufinfo.windows or #bufinfo.windows == 0) then
+      print(('Deleting buffer %d : %s'):format(bufinfo.bufnr, bufinfo.name))
+      vim.api.nvim_buf_delete(bufinfo.bufnr, { force = false, unload = false })
+    end
+  end, bufinfos)
+end, { desc = '[C]lear [U]nused [B]uffers that are not shown currently in a window' })
+
 vim.keymap.set('n', 'crd', ':!crd', { desc = 'Create a React directory' })
 
 -- Keybind to create a new line while in insert mode
