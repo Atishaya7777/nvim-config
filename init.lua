@@ -169,6 +169,15 @@ require('lazy').setup({
   -- NOTE: Plugins can be added with a link (or for a github repo: 'owner/repo' link).
   'tpope/vim-sleuth', -- Detect tabstop and shiftwidth automatically
 
+  {
+    'norcalli/nvim-colorizer.lua',
+    config = function()
+      require('colorizer').setup {
+        '*',
+      }
+    end,
+  }, -- Color highlighter for hex/rgb/rgba codes
+
   -- NOTE: Plugins can also be added by using a table,
   -- with the first argument being the link and the following
   -- keys can be used to configure plugin behavior/loading/etc.
@@ -217,6 +226,14 @@ require('lazy').setup({
         changedelete = { text = '~' },
       },
     },
+  },
+
+  { 'kevinhwang91/promise-async' },
+
+  {
+    'kevinhwang91/nvim-ufo',
+    requires = 'kevinhwang91/promise-async',
+    config = function() end,
   },
 
   -- NOTE: Plugins can also be configured to run Lua code when they are loaded.
@@ -296,7 +313,11 @@ require('lazy').setup({
         --     i = { ['<c-enter>'] = 'to_fuzzy_refine' },
         --   },
         -- },
-        -- pickers = {}
+        pickers = {
+          find_files = {
+            hidden = true,
+          },
+        },
         defaults = {
           path_display = {
             -- Shortens the path displayed while fuzzy finding to include only the first 3 characters
@@ -547,18 +568,18 @@ require('lazy').setup({
             },
           },
         },
-        tailwindcss = {
-          settings = {
-            tailwindCSS = {
-              experimental = {
-                classRegex = {
-                  { 'cva\\(([^)]*)\\)', '["\'`]([^"\'`]*).*?["\'`]' },
-                },
-              },
-            },
-          },
-        },
-        astro = {},
+        -- tailwindcss = {
+        --   settings = {
+        --     tailwindCSS = {
+        --       experimental = {
+        --         classRegex = {
+        --           { 'cva\\(([^)]*)\\)', '["\'`]([^"\'`]*).*?["\'`]' },
+        --         },
+        --       },
+        --     },
+        --   },
+        -- },
+        -- astro = {},
         bashls = {
           filetypes = {
             'sh',
@@ -579,6 +600,19 @@ require('lazy').setup({
             },
           },
         },
+        emmet_language_server = {
+          filetypes = {
+            'css',
+            'html',
+            'javascript',
+            'javascriptreact',
+            'sass',
+            'scss',
+            'pug',
+            'typescriptreact',
+            'typescript',
+          },
+        },
       }
 
       -- Ensure the servers and tools above are installed
@@ -594,9 +628,9 @@ require('lazy').setup({
       local ensure_installed = vim.tbl_keys(servers or {})
       vim.list_extend(ensure_installed, {
         'stylua', -- Used to format Lua code
-        'prettier',
-        'eslint_d',
-        'tailwindcss',
+        -- 'prettier',
+        'eslint',
+        -- 'tailwindcss',
       })
       require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 
@@ -646,11 +680,11 @@ require('lazy').setup({
         python = { 'isort', 'black' },
         -- You can use a sub-list to tell conform to run *until* a formatter
         -- is found.
-        javascript = { { 'prettier' } },
-        typescript = { { 'prettier' } },
-        javascriptreact = { { 'prettier' } },
-        typescriptreact = { { 'prettier' } },
-        astro = { { 'prettier' } },
+        javascript = { { 'eslint' } },
+        typescript = { { 'eslint' } },
+        javascriptreact = { { 'eslint' } },
+        typescriptreact = { { 'eslint' } },
+        astro = { { 'eslint' } },
       },
     },
   },
@@ -778,6 +812,7 @@ require('lazy').setup({
       -- Like many other themes, this one has different styles, and you could load
       -- any other, such as 'tokyonight-storm', 'tokyonight-moon', or 'tokyonight-day'.
       vim.cmd.colorscheme 'tokyonight-night'
+      -- vim.cmd.colorscheme 'onedark'
 
       -- You can configure highlights by doing something like:
       vim.cmd.hi 'Comment gui=none'
