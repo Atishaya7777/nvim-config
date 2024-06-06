@@ -131,6 +131,9 @@ vim.keymap.set('n', 'crd', ':!crd', { desc = 'Create a React directory' })
 -- Keybind to create a new line while in insert mode
 vim.keymap.set('i', '<C-n>', '<esc>o', { desc = 'Create new line and jump to the new line in insert mode' })
 
+-- PLUGIN: Disable error quickfix list
+vim.g.vimtex_quickfix_enabled = 0
+
 -- [[ Basic Autocommands ]]
 --  See `:help lua-guide-autocommands`
 
@@ -209,7 +212,14 @@ require('lazy').setup({
       { '<c-\\>', '<cmd><C-U>TmuxNavigatePrevious<cr>' },
     },
   },
-
+  {
+    'lervag/vimtex',
+    lazy = false, -- we don't want to lazy load VimTeX
+    -- tag = "v2.15", -- uncomment to pin to a specific release
+    init = function()
+      -- VimTeX configuration goes here
+    end,
+  },
   -- Here is a more advanced example where we pass configuration
   -- options to `gitsigns.nvim`. This is equivalent to the following Lua:
   --    require('gitsigns').setup({ ... })
