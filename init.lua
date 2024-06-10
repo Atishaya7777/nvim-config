@@ -131,6 +131,13 @@ vim.keymap.set('n', 'crd', ':!crd', { desc = 'Create a React directory' })
 -- Keybind to create a new line while in insert mode
 vim.keymap.set('i', '<C-n>', '<esc>o', { desc = 'Create new line and jump to the new line in insert mode' })
 
+-- Keybind to compile and generate a .svg file while inside a dot file
+vim.keymap.set('n', 'gsvg', function()
+  local filename = vim.api.nvim_buf_get_name(0)
+  local shell_cmd = 'cdotsvg' .. filename
+  os.execute(shell_cmd)
+end)
+
 -- PLUGIN: Disable error quickfix list
 vim.g.vimtex_quickfix_enabled = 0
 
@@ -594,6 +601,11 @@ require('lazy').setup({
           filetypes = {
             'sh',
             'zsh',
+          },
+        },
+        dotls = {
+          filetypes = {
+            'dot',
           },
         },
         lua_ls = {
