@@ -581,6 +581,10 @@ require('lazy').setup({
           filetypes = {
             'c',
           },
+          cmd = {
+            'clangd',
+            '--offset-encoding=utf-16',
+          },
         },
         -- gopls = {},
         -- pyright = {},
