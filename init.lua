@@ -1,6 +1,7 @@
 -- Set <space> as the leader key
 -- See `:help mapleader`
 --  NOTE: Must happen before plugins are loaded (otherwise wrong leader will be used)
+
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 
@@ -16,7 +17,10 @@ vim.g.have_nerd_font = true
 vim.opt.number = true
 -- You can also add relative line numbers, to help with jumping.
 --  Experiment for yourself to see if you like it!
-vim.opt.relativenumber = true
+vim.opt.relativenumber = false
+
+vim.opt['tabstop'] = 4
+vim.opt['shiftwidth'] = 4
 
 -- Enable mouse mode, can be useful for resizing splits for example!
 vim.opt.mouse = 'a'
@@ -104,6 +108,10 @@ vim.keymap.set('n', '<C-l>', '<C-w><C-l>', { desc = 'Move focus to the right win
 vim.keymap.set('n', '<C-j>', '<C-w><C-j>', { desc = 'Move focus to the lower window' })
 vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper window' })
 
+-- Keybinds for soft navigating the wrapped lines
+vim.keymap.set('n', 'j', 'gj', { desc = 'Soft navigate the wrapped line down.' })
+vim.keymap.set('n', 'k', 'gk', { desc = 'Soft navigate the wrapped line up.' })
+
 -- Keybinds for actually deleting instead of cutting stuff
 vim.keymap.set('n', 'd', '"_d', { desc = 'Cut text and put it in the black hole register | Effectively deleting it' })
 vim.keymap.set('n', 'dp', '"_dP', { desc = 'Paste the text from the black hole register' })
@@ -139,7 +147,8 @@ vim.keymap.set('n', 'gsvg', function()
 end)
 
 -- PLUGIN: Disable error quickfix list
-vim.g.vimtex_quickfix_enabled = 0
+-- vim.g.vimtex_quickfix_enabled = 0
+vim.g.vimtex_quickfix_ignore_filters = { 'Underfull', 'Overfull' }
 
 -- [[ Basic Autocommands ]]
 --  See `:help lua-guide-autocommands`
@@ -178,7 +187,7 @@ vim.opt.rtp:prepend(lazypath)
 require('lazy').setup({
   -- NOTE: Plugins can be added with a link (or for a github repo: 'owner/repo' link).
   'tpope/vim-sleuth', -- Detect tabstop and shiftwidth automatically
-
+  'github/copilot.vim',
   {
     'norcalli/nvim-colorizer.lua',
     config = function()
@@ -251,6 +260,25 @@ require('lazy').setup({
     'kevinhwang91/nvim-ufo',
     requires = 'kevinhwang91/promise-async',
     config = function() end,
+  },
+
+  -- For markdown
+  {
+    'MeanderingProgrammer/markdown.nvim',
+    name = 'render-markdown', -- Only needed if you have another plugin named markdown.nvim
+    dependencies = { 'nvim-treesitter/nvim-treesitter' },
+    config = function()
+      require('render-markdown').setup {}
+    end,
+  },
+  -- install without yarn or npm
+  {
+    'iamcco/markdown-preview.nvim',
+    cmd = { 'MarkdownPreviewToggle', 'MarkdownPreview', 'MarkdownPreviewStop' },
+    ft = { 'markdown' },
+    build = function()
+      vim.fn['mkdp#util#install']()
+    end,
   },
 
   -- NOTE: Plugins can also be configured to run Lua code when they are loaded.
@@ -549,7 +577,11 @@ require('lazy').setup({
       --  - settings (table): Override the default settings passed when initializing the server.
       --        For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
       local servers = {
-        -- clangd = {},
+        clangd = {
+          filetypes = {
+            'c',
+          },
+        },
         -- gopls = {},
         -- pyright = {},
         -- rust_analyzer = {},
@@ -596,7 +628,13 @@ require('lazy').setup({
         --     },
         --   },
         -- },
-        -- astro = {},
+        -- astro = {
+        --   filetypes = {
+        --     'typescript',
+        --     'javascript',
+        --     'astro',
+        --   },
+        -- },
         bashls = {
           filetypes = {
             'sh',
@@ -625,14 +663,20 @@ require('lazy').setup({
         emmet_language_server = {
           filetypes = {
             'css',
-            'html',
-            'javascript',
-            'javascriptreact',
+            -- 'html',
+            -- 'javascript',
+            -- 'javascriptreact',
             'sass',
             'scss',
             'pug',
-            'typescriptreact',
-            'typescript',
+            -- 'astro',
+            -- 'typescriptreact',
+            -- 'typescript',
+          },
+        },
+        texlab = {
+          filetypes = {
+            'tex',
           },
         },
       }
@@ -650,9 +694,12 @@ require('lazy').setup({
       local ensure_installed = vim.tbl_keys(servers or {})
       vim.list_extend(ensure_installed, {
         'stylua', -- Used to format Lua code
-        -- 'prettier',
+        'prettier',
         'eslint',
-        -- 'tailwindcss',
+        'texlab',
+        'clangd',
+        'tailwindcss',
+        'sqlls',
       })
       require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 
@@ -670,7 +717,6 @@ require('lazy').setup({
       }
     end,
   },
-
   { -- Autoformat
     'stevearc/conform.nvim',
     lazy = false,
@@ -690,7 +736,7 @@ require('lazy').setup({
         -- Disable "format_on_save lsp_fallback" for languages that don't
         -- have a well standardized coding style. You can add additional
         -- languages here or re-enable it for the disabled ones.
-        local disable_filetypes = { c = true, cpp = true }
+        local disable_filetypes = {}
         return {
           timeout_ms = 500,
           lsp_fallback = not disable_filetypes[vim.bo[bufnr].filetype],
@@ -698,15 +744,13 @@ require('lazy').setup({
       end,
       formatters_by_ft = {
         lua = { 'stylua' },
-        -- Conform can also run multiple formatters sequentially
         python = { 'isort', 'black' },
-        -- You can use a sub-list to tell conform to run *until* a formatter
-        -- is found.
-        javascript = { { 'eslint' } },
-        typescript = { { 'eslint' } },
-        javascriptreact = { { 'eslint' } },
-        typescriptreact = { { 'eslint' } },
-        astro = { { 'eslint' } },
+        -- NOTE: Removed this chunk because it kept interfering with LG work
+        -- javascript = { { 'eslint' } },
+        -- typescript = { { 'eslint' } },
+        -- javascriptreact = { { 'eslint' } },
+        -- typescriptreact = { { 'eslint' } },
+        -- astro = { { 'eslint', 'prettier' } },
       },
     },
   },
@@ -750,7 +794,10 @@ require('lazy').setup({
       -- See `:help cmp`
       local cmp = require 'cmp'
       local luasnip = require 'luasnip'
-      luasnip.config.setup {}
+      luasnip.config.setup {
+        -- Load snippets from ~/.config/nvim/LuaSnip/
+        require('luasnip.loaders.from_lua').lazy_load { paths = { '~/.config/nvim/LuaSnip/' } },
+      }
 
       cmp.setup {
         snippet = {
