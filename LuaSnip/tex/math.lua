@@ -61,4 +61,11 @@ return {
     { trig = 'star', dscr = 'Snippet that generates the Star definition as a family of coclique' },
     fmt('\\mathcal{I}^<>_<>', { i(1), i(2) }, { delimiters = '<>' })
   ),
+
+  -- Snippets for commonly used mathbb symbols
+  s({ trig = 'bbn', dscr = 'Snippet for \\mathbb{N}' }, t '\\mathbb{N}'),
+  s({ trig = 'bbz', dscr = 'Snippet for \\mathbb{Z}' }, t '\\mathbb{Z}'),
+  s({ trig = 'bbr', dscr = 'Snippet for \\mathbb{R}' }, t '\\mathbb{R}'),
+  s({ trig = 'bbc', dscr = 'Snippet for \\mathbb{C}' }, t '\\mathbb{C}'),
+  s({ trig = 'bbq', dscr = 'Snippet for \\mathbb{Q}' }, t '\\mathbb{Q}'),
 }
