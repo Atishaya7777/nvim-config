@@ -133,6 +133,15 @@ end, { desc = '[C]lear [U]nused [B]uffers that are not shown currently in a wind
 
 vim.keymap.set('n', 'crd', ':!crd', { desc = 'Create a React directory' })
 
+-- Keybind to toggle diffview for git
+vim.keymap.set('n', '<leader>gd', function()
+  if next(require('diffview.lib').views) == nil then
+    vim.cmd 'DiffviewOpen'
+  else
+    vim.cmd 'DiffviewClose'
+  end
+end, { desc = 'Toggle [G]it [D]iffview' })
+
 -- Keybind to create a new line while in insert mode
 vim.keymap.set('i', '<C-n>', '<esc>o', { desc = 'Create new line and jump to the new line in insert mode' })
 
@@ -241,10 +250,6 @@ require('lazy').setup({
   {
     'sindrets/diffview.nvim',
     cmd = { 'DiffviewOpen', 'DiffviewClose', 'DiffviewToggleFiles', 'DiffviewFocusFiles' },
-    keys = {
-      { '<leader>gd', '<cmd>DiffviewOpen<CR>' },
-      { '<leader>gD', '<cmd>DiffviewClose<CR>' },
-    },
   },
 
   -- Here is a more advanced example where we pass configuration
