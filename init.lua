@@ -147,6 +147,10 @@ end)
 -- vim.g.vimtex_quickfix_enabled = 0
 vim.g.vimtex_quickfix_ignore_filters = { 'Underfull', 'Overfull' }
 
+-- Set pdf viewer to sioyek
+vim.g.vimtex_view_method = 'sioyek'
+vim.g.vimtex_view_sioyek_exe = '/opt/homebrew/bin/sioyek'
+
 -- [[ Basic Autocommands ]]
 --  See `:help lua-guide-autocommands`
 
@@ -233,6 +237,16 @@ require('lazy').setup({
       -- VimTeX configuration goes here
     end,
   },
+  -- Git diff viewer
+  {
+    'sindrets/diffview.nvim',
+    cmd = { 'DiffviewOpen', 'DiffviewClose', 'DiffviewToggleFiles', 'DiffviewFocusFiles' },
+    keys = {
+      { '<leader>gd', '<cmd>DiffviewOpen<CR>' },
+      { '<leader>gD', '<cmd>DiffviewClose<CR>' },
+    },
+  },
+
   -- Here is a more advanced example where we pass configuration
   -- options to `gitsigns.nvim`. This is equivalent to the following Lua:
   --    require('gitsigns').setup({ ... })
